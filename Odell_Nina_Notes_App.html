@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue Notes App</title>
+    <!-- Load Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Load Vue 3  -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <style>
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f8f9fa;
+        }
+
+        #app {
+            width: 100%;
+            max-width: 300px;
+        }
+
+        /* Rounded square input */
+        .note-input {
+            width: 100%;
+            height: 200px;
+            border-radius: 15px;
+            resize: none;
+            padding: 15px;
+            font-size: 14px;
+        }
+
+        /* Rounded PURPLE! button */
+        .btn-purple {
+            background-color: #6f42c1;
+            color: white;
+            border-radius: 15px;
+            border: none;
+            transition: background-color 0.3s;
+            width: 100%;
+            padding: 8px;
+        }
+
+        .btn-purple:hover {
+            background-color: #5a32a3;
+        }
+
+        /* Notes as squared cards */
+        .note-card {
+            background-color: #e6e0f8;
+            border-radius: 15px;
+            width: 100%;
+            height: 200px;           /* makes it more square */
+            padding: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .delete-btn {
+            background-color: #c12f6f;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 5px 10px;
+            align-self: flex-end;
+            transition: background-color 0.3s;
+        }
+
+        .delete-btn:hover {
+            background-color: #a02759;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        /* Text wrap in note card */
+        .note-card span {
+            word-break: break-word;
+            font-size: 14px;
+            overflow: auto;
+        }
+    </style>
+</head>
+<body>
+
+<div id="app">
+    <!-- Title -->
+    <h1>My Notes App!</h1>
+
+    <!-- Note input and button -->
+    <div class="mb-2 d-flex flex-column gap-3">
+        <textarea class="note-input" v-model="newNote" placeholder="Enter your note here"></textarea>
+        <button class="btn btn-purple" @click="addNote">Add Note</button>
+    </div>
+
+    <!-- Notes list -->
+    <div v-if="notes.length > 0">
+        <div v-for="(note, index) in notes" :key="index" class="note-card">
+            <span>{{ note }}</span>
+            <button class="delete-btn" @click="deleteNote(index)">Delete</button>
+        </div>
+    </div>
+
+    <!-- Message if no notes -->
+    <p class="text-center mt-3 text-muted" v-else>Add a note!</p>
+</div>
+
+<script>
+const { createApp } = Vue;
+
+createApp({
+    data() {
+        return {
+            newNote: '',
+            notes: []
+        };
+    },
+    methods: {
+        addNote() {
+            if (this.newNote.trim() !== '') {
+                this.notes.push(this.newNote.trim());
+                this.newNote = '';
+            }
+        },
+        deleteNote(index) {
+            this.notes.splice(index, 1);
+        }
+    }
+}).mount('#app');
+</script>
+
+</body>
+</html>
